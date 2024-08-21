@@ -14,3 +14,7 @@ To cancel a job that has been submitted:<br>
 
 To submit a job:<br>
 `qsub [job_script]`
+
+Job request:<br>
+This example requests 55 Broadwell nodes on Pleiades each with 28 CPUs.
+`#PBS -l select=55:ncpus=28:model=bro`
