@@ -64,3 +64,7 @@ This example requests two resource chunks: (1) one CPU in one Haswell node and (
 Chunks:<br>
 
 `#PBS -l select=1:ncpus=1:model=has` + `3:ncpus=8:model=has`
+
+Pleiades Queue Structure:
+devel queue is for short, development jobs with a wall time 2 hrs or less. Info [here](https://www.nas.nasa.gov/hecc/support/kb/pleiades-devel-queue_290.html)
+For longer runs, use normal or long queues. "The normal, long and low queues are for production work. The debug and devel queues have higher priority and are for debugging and development work." Info [here](https://www.nas.nasa.gov/hecc/support/kb/pbs-job-queue-structure_187.html)
