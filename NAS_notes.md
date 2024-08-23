@@ -15,6 +15,11 @@ your_local_system% scp -oProxyCommand='ssh sfe6.nas.nasa.gov
                  ssh-proxy %h' pfe21.nas.nasa.gov:/pfe20:/nobackup/mzahn1/[filename] .
 ```
 
+**To see what nobackup filesystem (Lustre Filesystem) you were assigned to:** <br>
+```
+pfe21% ls -l /nobackup/your_username
+```
+
 **To compress a folder into a tar.gz file**<br>
 ```
 tar -czvf output_filename.tar.gz /path/to/folder
@@ -23,6 +28,11 @@ tar -czvf output_filename.tar.gz /path/to/folder
 - z: Compresses the archive using gzip.
 - v: Verbose mode, shows the progress in the terminal.
 - f: Specifies the name of the output file.
+
+**Use shell script to take subdirectories of ~/diags/*, compress each diagnostic, and save to output dir
+```
+sh compress_model_granules.sh ~/nobackup/path_to/run/diags ~/nobackup/path_to/output_gz
+```
 
 **To see your nobackup storage quota:** <br>
 ```
@@ -84,10 +94,5 @@ python /nobackup/mzahn1/acg/Access-Key-Generation-master/aws-login.py -l --pub -
 To transfer files from nobackup to s3 bucket:
 ```
 aws s3 sync /nobackup/username/dir1 s3://bucket_name/dir/ --profile [profile_name]
-```
-
-**To see what nobackup filesystem (Lustre Filesystem) you were assigned to:** <br>
-```
-pfe21% ls -l /nobackup/your_username
 ```
 
