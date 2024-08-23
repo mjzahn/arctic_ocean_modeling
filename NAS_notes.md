@@ -19,6 +19,14 @@ your_local_system% scp -oProxyCommand='ssh sfe6.nas.nasa.gov
 ```
 pfe21% ls -l /nobackup/your_username
 ```
+*Note: these will all direct to the same path:*
+```
+/home1/mzahn1/nobackup/sassie-ecco/output_gz
+/nobackup/mzahn1/sassie-ecco/output_gz
+~/nobackup/sassie-ecco/output_gz
+/nobackupp27/mzahn1/sassie-ecco/output_gz
+```
+where `/home1/mzahn1/nobackup` is linked to `/nobackup/mzahn1`
 
 **To compress a folder into a tar.gz file**<br>
 ```
@@ -93,6 +101,6 @@ python /nobackup/mzahn1/acg/Access-Key-Generation-master/aws-login.py -l --pub -
 
 To transfer files from nobackup to s3 bucket:
 ```
-aws s3 sync /nobackup/username/dir1 s3://bucket_name/dir/ --profile [profile_name]
+aws s3 sync /nobackup/username/dir1/ s3://bucket_name/dir/ --profile [profile_name]
 ```
 
