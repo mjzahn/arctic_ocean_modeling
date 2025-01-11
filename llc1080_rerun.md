@@ -118,7 +118,7 @@ To run the full model the job script will be:
 ###PBS -l select=1:model=bro+32:ncpus=24:model=bro
 #PBS -l select=40:ncpus=40:model=sky_ele
 ###PBS -l select=55:ncpus=28:model=bro
-#PBS -l walltime=9:00:00
+#PBS -l walltime=8:00:00
 ###PBS -q devel
 #PBS -q normal
 #PBS -j oe
