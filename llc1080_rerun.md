@@ -69,7 +69,7 @@ nTimeSteps = 1440,
 
 Copy pickups to run directory
 ```
-lfe% shiftc /u/[username]/[path] pfe:/nobackup/mzahn1/sassie-ecco/[path]
+lfe% shiftc /u/[username]/[path] pfe:/nobackup/mzahn1/sassie-ecco/pickups/
 ```   
 
 6. Check to make sure output folders exist in 'diags/'. For example:
