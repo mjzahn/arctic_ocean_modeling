@@ -158,3 +158,13 @@ qdel 21372294.pbspl1
 ```
 
 Once the job is finished, you can open the job file (e.g., `cat job_1080_devel.o21372294`) and it should read "NORMAL END" a bunch of times.
+
+10. To transfer only the files you want to the new  `results` directory you can run:
+
+```
+# to test to make sure you have the correct files:
+find . -type f -name '*5867280*' -exec echo cp --parents "{}" ~/nobackup/sassie-ecco/MITgcm/configurations/N1_1080/results/ \;
+
+# to make the transfer:
+find . -type f -name '*5867280*' -exec cp --parents "{}" ~/nobackup/sassie-ecco/MITgcm/configurations/N1_1080/results/ \;
+```
