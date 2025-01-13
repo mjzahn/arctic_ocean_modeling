@@ -168,3 +168,8 @@ find . -type f -name '*5867280*' -exec echo cp --parents "{}" ~/nobackup/sassie-
 # to make the transfer:
 find . -type f -name '*5867280*' -exec cp --parents "{}" ~/nobackup/sassie-ecco/MITgcm/configurations/N1_1080/results/ \;
 ```
+
+After copying the files you need, to remove all files within all subdirectories when you are in the `diags` directory so you can run the model again:
+```
+rm -v **/*(.)
+```
