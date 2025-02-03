@@ -49,7 +49,16 @@ Now look for the closest pickup file before this iter num and calculate how many
 
 The closest pickup files for this example is `pickup.0005850000.meta` and `pickup.0005850000.data`. This also includes the sea ice pickups `pickup_seaice.0005850000.meta`. Copy these pickup files to the run directory.
 
-`nTimeSteps` is equal to [(sec/day * number of days)/(sec per timestep)]. For example, if I wanted 3 weeks, nTimeSteps = (86400*21)/120) = 15120.
+Copy pickups to run directory
+```
+# first tx to personal pfe from lou
+lfe% shiftc /u/[username]/[path] pfe:/nobackup/mzahn1/sassie-ecco/pickups/
+
+# then make copy in run directory
+shiftc ~/nobackup/sassie-ecco/pickups/[filename] ~/nobackup/sassie-ecco/MITgcm/configurations/N1_1080/run/
+```   
+
+Now for the `data` file, `nTimeSteps` is equal to [(sec/day * number of days)/(sec per timestep)]. For example, if I wanted 3 weeks, nTimeSteps = (86400*21)/120) = 15120.
 
 For this example, the pickup 5850000 corresponds to "2014-03-31," so we need 25 days to reach timestep "2014-04-24." nTimeSteps = (86400*25)/120) = 18000.
 
@@ -67,11 +76,6 @@ To test the setup and see how long it takes to run, just save 2 days:
 nIter0 = 5850000,
 nTimeSteps = 1440,
 ```
-
-Copy pickups to run directory
-```
-lfe% shiftc /u/[username]/[path] pfe:/nobackup/mzahn1/sassie-ecco/pickups/
-```   
 
 5. Check to make sure output folders exist in 'diags/'. For example:
 ```
