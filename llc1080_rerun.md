@@ -6,11 +6,18 @@ ssh mzahn1@sfe
 ssh pfe
 ```
 
-2. Naviagte to MITgcm directory for the N1_1080 model. In the `namelist` directory, modify the `data.diagnostics` file.
+2. Then start a new tmux session
+```
+tmux new -s [name]
+```
+
+3. Naviagte to MITgcm directory for the N1_1080 model. In the `namelist` directory, modify the `data.diagnostics` file.
 
 In the `data.diagnostics` file, if I want to save every week, the frequency  = 604800.0 (secs/7 days) for all data variables and frequency  = -604800.0 for the snapshots.
   
-4. In the `namelist` directory, modify the `data` file for the pickup file to start at, and copy required pickup files to the `run` directory. To determine which pickup to start from, figure out the iter num for the date you want to save. 
+4. In the `namelist` directory, modify the `data` file for the pickup file to start at, and copy required pickup files to the `run` directory.
+
+To determine which pickup to start from, figure out the iter num for the date you want to save. 
 For example, if I want "2014-04-24," this corresponds to iter num 5867280. You can use this function to get the iter number from a timestep:
 
 ```
@@ -37,6 +44,7 @@ def iter_from_timestamp(timestamp_str):
 iter_from_timestamp("2014-04-24")
 # results in: 5867280
 ```
+
 Now look for the closest pickup file before this iter num and calculate how many timesteps are needed to get to the date I want.
 
 The closest pickup files for this example is `pickup.0005850000.meta` and `pickup.0005850000.data`. This also includes the sea ice pickups `pickup_seaice.0005850000.meta`. Copy these pickup files to the run directory.
@@ -44,13 +52,6 @@ The closest pickup files for this example is `pickup.0005850000.meta` and `picku
 `nTimeSteps` is equal to [(sec/day * number of days)/(sec per timestep)]. For example, if I wanted 3 weeks, nTimeSteps = (86400*21)/120) = 15120.
 
 For this example, the pickup 5850000 corresponds to "2014-03-31," so we need 25 days to reach timestep "2014-04-24." nTimeSteps = (86400*25)/120) = 18000.
-
-```
-# Under Time stepping parameters
- &PARM03
-nIter0 = 7002000,
-nTimeSteps = 2880,
-```
 
 ```
 # Under Time stepping parameters
@@ -72,14 +73,14 @@ Copy pickups to run directory
 lfe% shiftc /u/[username]/[path] pfe:/nobackup/mzahn1/sassie-ecco/pickups/
 ```   
 
-6. Check to make sure output folders exist in 'diags/'. For example:
+5. Check to make sure output folders exist in 'diags/'. For example:
 ```
 # create directories for only the diagnostic variables (not snapshots)
 mkdir ocean_state_2D_day_mean ocean_state_3D_day_mean seaice_state_day_mean tr_adv_r_day_mean tr_adv_x_3D_day_mean tr_adv_x_2D_day_mean tr_diff_r_day_mean vert_mass_day_mean ocean_vel_day_mean vol_adv_day_mean EXF_day_mean oce_flux_day_mean phi_3D_day_mean seaice_flux_day_mean seaice_vel_day_mean KPP_mix_day_mean KPP_hbl_day_mean 
 
 ```
 
-7. Open the job file `job_1080_devel`.
+6. Open the job file `job_1080_devel`.
 Decide whether this job will be run on the devel or normal queue. The devel queue has a max wall time of 2 hours.
 
 It's a good idea to do a test with just a few days to make sure you know how long it will take. To run on devel, the job script `job_1080_devel` file should show:
@@ -138,7 +139,7 @@ limit stacksize unlimited
 mpiexec -np 1524 ./mitgcmuv
 ```
 
-9. Now it is time to run the model. To submit a job you will run:
+7. Now it is time to run the model. To submit a job you will run:
 
 ```
 # qsub script_name
@@ -159,7 +160,7 @@ qdel 21372294.pbspl1
 
 Once the job is finished, you can open the job file (e.g., `cat job_1080_devel.o21372294`) and it should read "NORMAL END" a bunch of times.
 
-10. To transfer only the files you want to the new  `results` directory you can run:
+8. To transfer only the files you want to the new  `results` directory you can run:
 
 ```
 # to test to make sure you have the correct files:
@@ -172,4 +173,26 @@ find . -type f -name '*5867280*' -exec cp --parents "{}" ~/nobackup/sassie-ecco/
 After copying the files you need, to remove all files within all subdirectories when you are in the `diags` directory so you can run the model again:
 ```
 rm -v **/*(.)
+```
+
+9. To copy files from the results directory on pfe to cloud storage use:
+```
+# first load aws cli module
+module load scicon/aws_cli_tools
+# run this to make sure it worked
+aws cli
+```
+
+Note, you may need to add or update s3 bucket credentials in the `~/.aws/config` file.
+To set up new JPL credentials for ecco, navigate to the scripts directory and run the `renew_aws_credentials.sh` script where you will be prompted to enter your JPL credentials. The script contains the following:
+```
+#!/usr/bin/zsh
+conda activate sassie
+cd /home1/mzahn1 
+python /nobackup/mzahn1/acg/Access-Key-Generation-master/aws-login.py -l --pub -r us-west-2
+```
+
+Then copy files from pfe to the cloud
+```
+aws s3 sync ~/nobackup/sassie-ecco/MITgcm/configurations/N1_1080/results/ s3://ecco-model-granules/SASSIE/N1_rerun/ --profile saml-pub
 ```
