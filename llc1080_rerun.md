@@ -56,6 +56,8 @@ lfe% shiftc /u/[username]/[path] pfe:/nobackup/mzahn1/sassie-ecco/pickups/
 
 # then make copy in run directory
 shiftc ~/nobackup/sassie-ecco/pickups/[filename] ~/nobackup/sassie-ecco/MITgcm/configurations/N1_1080/run/
+# another option:
+shiftc ~/nobackup/sassie-ecco/pickups/*0005994000* ~/nobackup/sassie-ecco/MITgcm/configurations/N1_1080/run/
 ```   
 
 Now for the `data` file, `nTimeSteps` is equal to [(sec/day * number of days)/(sec per timestep)]. For example, if I wanted 3 weeks, nTimeSteps = (86400*21)/120) = 15120.
@@ -166,12 +168,28 @@ Once the job is finished, you can open the job file (e.g., `cat job_1080_devel.o
 
 8. To transfer only the files you want to the new  `results` directory you can run:
 
+For a single file:
 ```
 # to test to make sure you have the correct files:
 find . -type f -name '*5867280*' -exec echo cp --parents "{}" ~/nobackup/sassie-ecco/MITgcm/configurations/N1_1080/results/ \;
 
 # to make the transfer:
 find . -type f -name '*5867280*' -exec cp --parents "{}" ~/nobackup/sassie-ecco/MITgcm/configurations/N1_1080/results/ \;
+```
+
+For multiple files within a range of iter numbers:
+```
+# make sure you are in one of the diags directories
+# to test to make sure you have the correct files, print out the names of the files to be transferred
+ls *day_mean.* | grep -Ev '000754[2-6][0-9]{3}'
+
+# this will give you the number of files to be transferred
+ls *day_mean.* | grep -Ev '000754[2-6][0-9]{3}' | wc -l
+
+# to make the transfer, navigate to one of the subdirectories in diags:
+ls *day_mean.* | grep -Ev '000754[2-6][0-9]{3}' | xargs cp -t ~/nobackup/sassie-ecco/MITgcm/configurations/N1_1080/results/[subdir name]
+# for example:
+ls *day_mean.* | grep -Ev '000754[2-6][0-9]{3}' | xargs cp -t ~/nobackup/sassie-ecco/MITgcm/configurations/N1_1080/results/tr_adv_x_3D_day_mean/
 ```
 
 After copying the files you need, to remove all files within all subdirectories when you are in the `diags` directory so you can run the model again:
