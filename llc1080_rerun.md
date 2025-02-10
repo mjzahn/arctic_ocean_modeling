@@ -218,3 +218,12 @@ Then copy files from pfe to the cloud
 ```
 aws s3 sync ~/nobackup/sassie-ecco/MITgcm/configurations/N1_1080/results/ s3://ecco-model-granules/SASSIE/N1_rerun/ --profile saml-pub
 ```
+
+In the past, I exceeded the CPU threshold on Pleiades when transferring files to the cloud. Be sure to throttle the transfer by setting concurrent requests to less than 10:
+```
+# to configure default profile
+aws configure set default.s3.max_concurrent_requests 9
+
+# to configure JPL profile
+aws configure set s3.max_concurrent_requests 9 --profile saml-pub
+```
