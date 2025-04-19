@@ -5,6 +5,12 @@
 pfe21% shiftc /u/username/file1 lfe:data/dir2
 ```
 
+To transfer files from Mike's nobackup to my own nobackup:
+```
+shiftc /nobackupp27/mwood7/Greenland/Nested_Models/MITgcm/configurations/downscale_greenland/L2/L2_Qimuss/results_control/daily_mean/Theta/* .
+```
+Then I can download files from my nobackup to my local machine.
+
 **To download files from nobackup folder to local machine:**
 ```
 your_local_system% scp mzahn1@pfe.nas.nasa.gov:/home1/mzahn1/nobackup/[filename] .
