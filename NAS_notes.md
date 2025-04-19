@@ -25,6 +25,11 @@ If that doesn't work, you can try:
 your_local_system% scp -oProxyCommand='ssh sfe6.nas.nasa.gov 
                  ssh-proxy %h' pfe21.nas.nasa.gov:/pfe20:/nobackup/mzahn1/[filename] .
 ```
+For example:
+```
+your_local_system% scp -oProxyCommand='ssh sfe6.nas.nasa.gov 
+                 ssh-proxy %h' pfe21.nas.nasa.gov:/pfe20:/nobackup/melville/L2_Qimuss/results_control/* .
+```
 
 **To see what nobackup filesystem (Lustre Filesystem) you were assigned to:** <br>
 ```
